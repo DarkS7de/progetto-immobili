@@ -1,0 +1,82 @@
+<div class="container mt-4">
+  <h2 class="mb-4">
+    {{ modalitaModifica() ? 'Modifica annuncio' : 'Nuovo annuncio' }}
+  </h2>
+
+  <div class="card">
+    <div class="card-body p-4">
+
+      <form (ngSubmit)="invia()" #f="ngForm">
+
+        <div class="mb-3">
+          <label class="form-label">Titolo *</label>
+          <input type="text" class="form-control" name="titolo" [(ngModel)]="form.titolo" required maxlength="200">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Descrizione *</label>
+          <textarea class="form-control" rows="4" name="descrizione" [(ngModel)]="form.descrizione" required></textarea>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Prezzo (€) *</label>
+            <input type="number" class="form-control" name="prezzo" [(ngModel)]="form.prezzo" required min="1" step="100">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Metri quadri *</label>
+            <input type="number" class="form-control" name="mq" [(ngModel)]="form.metriQuadri" required min="1">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Tipo *</label>
+            <select class="form-select" name="tipo" [(ngModel)]="form.tipoTransazione" required>
+              <option value="VENDITA">Vendita</option>
+              <option value="AFFITTO">Affitto</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Categoria *</label>
+            <select class="form-select" name="cat" [(ngModel)]="form.categoriaId" required>
+              <option [ngValue]="null" disabled>-- seleziona --</option>
+              <option *ngFor="let c of categorie()" [ngValue]="c.id">{{ c.nome }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Indirizzo</label>
+          <input type="text" class="form-control" name="indirizzo" [(ngModel)]="form.indirizzo">
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Latitudine *</label>
+            <input type="number" class="form-control" step="any" name="lat" [(ngModel)]="form.latitudine" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Longitudine *</label>
+            <input type="number" class="form-control" step="any" name="lng" [(ngModel)]="form.longitudine" required>
+          </div>
+        </div>
+
+        <div class="alert alert-info small">
+          Per trovare le coordinate, cerca l'indirizzo su <a href="https://www.openstreetmap.org" target="_blank">OpenStreetMap</a>,
+          tasto destro sul punto esatto → "Mostra l'indirizzo" → copia lat/long dall'URL.
+        </div>
+
+        <div *ngIf="errore()" class="alert alert-danger">{{ errore() }}</div>
+
+        <div class="d-flex gap-2 mt-4">
+          <button type="submit" class="btn btn-primary" [disabled]="!f.valid || inCorso()">
+            {{ inCorso() ? 'Salvataggio...' : (modalitaModifica() ? 'Aggiorna' : 'Pubblica annuncio') }}
+          </button>
+          <a routerLink="/venditore/miei-annunci" class="btn btn-outline-primary">Annulla</a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+.messaggio-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.messaggio-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 40px rgba(91, 95, 199, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.messaggio-non-letto {
+  border-left: 4px solid var(--brand) !important;
+  background: linear-gradient(135deg,
+  rgba(238, 240, 252, 0.7) 0%,
+  rgba(255, 255, 255, 0.35) 100%
+  ) !important;
+}

@@ -1,0 +1,116 @@
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="hero-title">Migliaia di immobili.<br>Un'unica piattaforma.</h1>
+      <p class="hero-subtitle">
+        Esplora le migliori opportunità di vendita e affitto in tutta Italia.
+      </p>
+
+      <div class="hero-search-wrapper">
+        <div class="hero-search">
+          <svg lucideSearch class="search-icon"></svg>
+          <input type="text" placeholder="Cerca per titolo, descrizione o città..."
+                 [(ngModel)]="testoRicerca"
+                 (keyup.enter)="cerca()">
+          <button class="btn btn-primary" (click)="cerca()">Cerca</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bolle decorative -->
+  <div class="hero-bubble hero-bubble-1"></div>
+  <div class="hero-bubble hero-bubble-2"></div>
+  <div class="hero-bubble hero-bubble-3"></div>
+</section>
+
+<div class="container mt-5">
+
+  <!-- STATISTICHE -->
+  <div class="row g-3 mb-5">
+    <div class="col-md-3 col-6">
+      <div class="stat-card">
+        <div class="stat-value">{{ numAnnunci() }}</div>
+        <div class="stat-label">Annunci attivi</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="stat-card">
+        <div class="stat-value">{{ numVendita() }}</div>
+        <div class="stat-label">In vendita</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="stat-card">
+        <div class="stat-value">{{ numAffitto() }}</div>
+        <div class="stat-label">In affitto</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="stat-card">
+        <div class="stat-value">{{ numCategorie() }}</div>
+        <div class="stat-label">Tipologie</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORIE -->
+  <h3 class="section-title">Cerca per tipologia</h3>
+  <div class="row g-3 mb-5">
+    <div class="col-md-2 col-4" *ngFor="let c of categorie()">
+      <div class="categoria-card" (click)="vaiACategoria(c.id)">
+        <div class="categoria-icon">
+          <svg *ngIf="iconaCategoria(c.nome) === 'building2'" lucideBuilding2></svg>
+          <svg *ngIf="iconaCategoria(c.nome) === 'house'" lucideHouse></svg>
+          <svg *ngIf="iconaCategoria(c.nome) === 'car'" lucideCar></svg>
+          <svg *ngIf="iconaCategoria(c.nome) === 'tree-pine'" lucideTreePine></svg>
+          <svg *ngIf="iconaCategoria(c.nome) === 'store'" lucideStore></svg>
+          <svg *ngIf="iconaCategoria(c.nome) === 'bed'" lucideBed></svg>
+        </div>
+        <div class="categoria-nome">{{ c.nome }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANNUNCI IN EVIDENZA -->
+  <h3 class="section-title">In evidenza</h3>
+
+  <div *ngIf="caricamento()" class="alert alert-info">Caricamento in corso...</div>
+
+  <div *ngIf="errore()" class="alert alert-danger">{{ errore() }}</div>
+
+  <div *ngIf="!caricamento() && !errore() && annunci().length === 0" class="alert alert-warning">
+    Nessun annuncio disponibile al momento.
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 mb-4" *ngFor="let a of annunci()">
+      <a [routerLink]="['/annunci', a.id]" class="text-decoration-none text-dark">
+        <div class="card h-100 card-cliccabile">
+          <div class="card-body">
+            <div class="mb-2">
+              <span class="badge bg-secondary">{{ a.tipoTransazione }}</span>
+              <span class="badge bg-info ms-1">{{ a.categoria.nome }}</span>
+            </div>
+            <h5 class="card-title mt-2">{{ a.titolo }}</h5>
+            <p class="card-text text-muted small">{{ a.codice }}</p>
+            <p class="card-text">{{ a.descrizione }}</p>
+
+            <p class="card-text">
+              <span *ngIf="a.prezzoVecchio" class="text-decoration-line-through text-muted me-2">
+                € {{ a.prezzoVecchio }}
+              </span>
+              <strong class="text-success fs-4">€ {{ a.prezzo }}</strong>
+            </p>
+
+            <p class="card-text indirizzo-card">
+              <svg lucideMapPin width="14" height="14"></svg>
+              <span>{{ a.metriQuadri }} m² · {{ a.indirizzo }}</span>
+            </p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

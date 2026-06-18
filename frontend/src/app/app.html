@@ -1,0 +1,57 @@
+<nav *ngIf="mostraNavbar()" class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/">
+      <svg lucideHouse width="22" height="22" stroke-width="2.5"></svg>
+      <span>Immobili</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navContent">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/ricerca" routerLinkActive="active">Cerca</a>
+        </li>
+
+        <ng-container *ngIf="!authService.isLoggato()">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login" routerLinkActive="active">Log In</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/registrazione" routerLinkActive="active">Registrati</a>
+          </li>
+        </ng-container>
+
+        <ng-container *ngIf="authService.isLoggato()">
+          <li class="nav-item" *ngIf="authService.isVenditore() || authService.isAdmin()">
+            <a class="nav-link" routerLink="/venditore/miei-annunci" routerLinkActive="active">I miei annunci</a>
+          </li>
+          <li class="nav-item" *ngIf="authService.isVenditore() || authService.isAdmin()">
+            <a class="nav-link" routerLink="/venditore/messaggi" routerLinkActive="active">Messaggi</a>
+          </li>
+          <li class="nav-item" *ngIf="authService.isAdmin()">
+            <a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin</a>
+          </li>
+          <li class="nav-item">
+            <span class="navbar-text me-3">
+              Ciao, <strong>{{ authService.utenteCorrente()?.nome }}</strong>
+              <span class="badge bg-primary ms-1">{{ authService.utenteCorrente()?.ruolo }}</span>
+            </span>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-outline-primary btn-sm" (click)="logout()">Log Out</button>
+          </li>
+        </ng-container>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<router-outlet />

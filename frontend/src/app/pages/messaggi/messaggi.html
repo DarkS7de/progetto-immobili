@@ -1,0 +1,35 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Messaggi ricevuti</h2>
+
+  <div *ngIf="caricamento()" class="alert alert-info">Caricamento...</div>
+
+  <div *ngIf="!caricamento() && messaggi().length === 0" class="alert alert-warning">
+    Non hai ancora ricevuto messaggi.
+  </div>
+
+  <div class="messaggi-lista">
+    <div *ngFor="let m of messaggi()"
+         class="card messaggio-card mb-3"
+         [class.messaggio-non-letto]="!m.letto"
+         (click)="apri(m)">
+      <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h6 class="mb-0">
+            <span *ngIf="!m.letto" class="badge bg-primary me-2">NUOVO</span>
+            {{ m.oggetto }}
+          </h6>
+          <small class="text-muted">{{ m.data | date:'dd/MM/yyyy HH:mm' }}</small>
+        </div>
+
+        <p class="mb-2">{{ m.testo }}</p>
+
+        <small class="text-muted">
+          Da: <strong>{{ m.nomeMittente }}</strong>
+          · {{ m.emailMittente }}
+          <span *ngIf="m.telefonoMittente"> · {{ m.telefonoMittente }}</span>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>

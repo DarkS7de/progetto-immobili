@@ -1,0 +1,61 @@
+<div class="container mt-4">
+  <h2 class="mb-1">Pannello amministratore</h2>
+  <p class="text-muted mb-4">Gestisci utenti, ruoli e permessi della piattaforma</p>
+
+  <div *ngIf="messaggio()" class="alert alert-info alert-dismissible">
+    {{ messaggio() }}
+    <button type="button" class="btn-close" (click)="messaggio.set(null)"></button>
+  </div>
+
+  <div *ngIf="caricamento()" class="alert alert-info">Caricamento utenti...</div>
+
+  <div *ngIf="!caricamento()" class="card">
+    <div class="card-body p-0">
+      <table class="table mb-0">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Ruolo</th>
+          <th>Stato</th>
+          <th>Azioni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let u of utenti()">
+          <td>{{ u.id }}</td>
+          <td><strong>{{ u.nome }} {{ u.cognome }}</strong></td>
+          <td><small class="text-muted">{{ u.email }}</small></td>
+          <td>
+              <span class="badge"
+                    [class.bg-danger]="u.ruolo === 'ADMIN'"
+                    [class.bg-primary]="u.ruolo === 'VENDITORE'"
+                    [class.bg-secondary]="u.ruolo === 'ACQUIRENTE'">
+                {{ u.ruolo }}
+              </span>
+          </td>
+          <td>
+            <span *ngIf="u.bannato" class="badge bg-warning">BANNATO</span>
+            <span *ngIf="!u.bannato" class="badge bg-success">Attivo</span>
+          </td>
+          <td>
+            <div *ngIf="u.ruolo !== 'ADMIN'" class="btn-group btn-group-sm" role="group">
+              <button *ngIf="!u.bannato" class="btn btn-outline-warning" (click)="banna(u)">
+                Banna
+              </button>
+              <button *ngIf="u.bannato" class="btn btn-outline-success" (click)="sbanna(u)">
+                Sbanna
+              </button>
+              <button class="btn btn-outline-primary" (click)="nominaAdmin(u)">
+                Nomina admin
+              </button>
+            </div>
+            <span *ngIf="u.ruolo === 'ADMIN'" class="text-muted small">—</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

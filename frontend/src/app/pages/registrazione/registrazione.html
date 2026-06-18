@@ -1,0 +1,125 @@
+<div class="auth-page">
+  <div class="row g-0 min-vh-100">
+
+    <!-- COLONNA SINISTRA: form -->
+    <div class="col-md-6 auth-form-side">
+      <div class="auth-form-wrapper">
+
+        <a routerLink="/" class="auth-brand mb-4 d-flex align-items-center gap-2">
+          <svg lucideHouse [size]="22" [strokeWidth]="2.5"></svg>
+          <span>Immobili</span>
+        </a>
+
+        <h2 class="auth-title">Crea il tuo account</h2>
+        <p class="auth-subtitle">Inizia subito a comprare o vendere immobili</p>
+
+        <form (ngSubmit)="invia()" #f="ngForm" class="mt-4">
+
+          <div class="mb-3">
+            <label class="form-label">Email *</label>
+            <input type="email" class="form-control" name="email" [(ngModel)]="form.email" required email
+                   placeholder="nome@esempio.it">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Password *</label>
+            <input type="password" class="form-control" name="password" [(ngModel)]="form.password"
+                   required minlength="6" placeholder="Almeno 6 caratteri">
+          </div>
+
+          <div class="row">
+            <div class="col-6 mb-3">
+              <label class="form-label">Nome *</label>
+              <input type="text" class="form-control" name="nome" [(ngModel)]="form.nome" required>
+            </div>
+            <div class="col-6 mb-3">
+              <label class="form-label">Cognome *</label>
+              <input type="text" class="form-control" name="cognome" [(ngModel)]="form.cognome" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Telefono</label>
+            <input type="tel" class="form-control" name="telefono" [(ngModel)]="form.telefono">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Ti registri come *</label>
+            <div class="role-selector">
+              <label class="role-option" [class.role-selected]="form.ruolo === 'ACQUIRENTE'">
+                <input type="radio" name="ruolo" value="ACQUIRENTE" [(ngModel)]="form.ruolo">
+                <svg lucideHouse [size]="24" class="role-icon"></svg>
+                <strong>Acquirente</strong>
+                <small>Voglio comprare o affittare</small>
+              </label>
+              <label class="role-option" [class.role-selected]="form.ruolo === 'VENDITORE'">
+                <input type="radio" name="ruolo" value="VENDITORE" [(ngModel)]="form.ruolo">
+                <svg lucideBriefcase [size]="24" class="role-icon"></svg>
+                <strong>Venditore</strong>
+                <small>Voglio vendere o affittare</small>
+              </label>
+            </div>
+          </div>
+
+          <div *ngIf="errore()" class="alert alert-danger py-2">
+            {{ errore() }}
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg w-100"
+                  [disabled]="!f.valid || inCorso()">
+            {{ inCorso() ? 'Registrazione...' : 'Crea account' }}
+          </button>
+
+          <p class="text-center mt-3 mb-0 text-muted">
+            Hai già un account? <a routerLink="/login" class="auth-link">Accedi</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- COLONNA DESTRA: pannello con bolle -->
+    <div class="col-md-6 auth-promo-side d-none d-md-flex">
+      <div class="auth-bubble auth-bubble-1"></div>
+      <div class="auth-bubble auth-bubble-2"></div>
+      <div class="auth-bubble auth-bubble-3"></div>
+
+      <div class="auth-promo-content">
+        <h1 class="promo-title">Unisciti a migliaia<br>di utenti</h1>
+        <p class="promo-subtitle">
+          Una piattaforma semplice e potente per gestire le tue compravendite immobiliari.
+        </p>
+
+        <div class="promo-features">
+          <div class="promo-feature">
+            <div class="feature-icon">
+              <svg lucideZap [size]="22"></svg>
+            </div>
+            <div>
+              <strong>Pubblica in pochi minuti</strong>
+              <small>Crea annunci con foto, mappa e dettagli</small>
+            </div>
+          </div>
+          <div class="promo-feature">
+            <div class="feature-icon">
+              <svg lucideMessageCircle [size]="22"></svg>
+            </div>
+            <div>
+              <strong>Contatti diretti</strong>
+              <small>Sistema di messaggi integrato</small>
+            </div>
+          </div>
+          <div class="promo-feature">
+            <div class="feature-icon">
+              <svg lucideTrendingUp [size]="22"></svg>
+            </div>
+            <div>
+              <strong>Promozione sui social</strong>
+              <small>Condividi i tuoi annunci su Facebook</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

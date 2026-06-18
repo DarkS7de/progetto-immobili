@@ -1,0 +1,91 @@
+<div class="auth-page">
+  <div class="row g-0 min-vh-100">
+
+    <!-- COLONNA SINISTRA: form -->
+    <div class="col-md-6 auth-form-side">
+      <div class="auth-form-wrapper">
+
+        <a routerLink="/" class="auth-brand mb-5 d-flex align-items-center gap-2">
+          <svg lucideHouse [size]="22" [strokeWidth]="2.5"></svg>
+          <span>Immobili</span>
+        </a>
+
+        <h2 class="auth-title">Bentornato</h2>
+        <p class="auth-subtitle">Accedi al tuo account per continuare</p>
+
+        <form (ngSubmit)="invia()" #f="ngForm" class="mt-4">
+
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" [(ngModel)]="email" required
+                   placeholder="nome@esempio.it">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" [(ngModel)]="password" required
+                   placeholder="••••••••">
+          </div>
+
+          <div *ngIf="errore()" class="alert alert-danger py-2">
+            {{ errore() }}
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg w-100 mt-2"
+                  [disabled]="!f.valid || inCorso()">
+            {{ inCorso() ? 'Accesso in corso...' : 'Accedi' }}
+          </button>
+
+          <p class="text-center mt-4 mb-0 text-muted">
+            Non hai un account? <a routerLink="/registrazione" class="auth-link">Registrati</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- COLONNA DESTRA: pannello con bolle -->
+    <div class="col-md-6 auth-promo-side d-none d-md-flex">
+      <div class="auth-bubble auth-bubble-1"></div>
+      <div class="auth-bubble auth-bubble-2"></div>
+      <div class="auth-bubble auth-bubble-3"></div>
+
+      <div class="auth-promo-content">
+        <h1 class="promo-title">La tua nuova casa<br>ti sta aspettando</h1>
+        <p class="promo-subtitle">
+          Migliaia di immobili in vendita e affitto, in tutta Italia, in un'unica piattaforma.
+        </p>
+
+        <div class="promo-features">
+          <div class="promo-feature">
+            <div class="feature-icon">
+              <svg lucideSearch [size]="22"></svg>
+            </div>
+            <div>
+              <strong>Ricerca avanzata</strong>
+              <small>Filtra per prezzo, metri quadri e tipologia</small>
+            </div>
+          </div>
+          <div class="promo-feature">
+            <div class="feature-icon">
+              <svg lucideMapPin [size]="22"></svg>
+            </div>
+            <div>
+              <strong>Posizione esatta</strong>
+              <small>Mappe interattive per ogni immobile</small>
+            </div>
+          </div>
+          <div class="promo-feature">
+            <div class="feature-icon">
+              <svg lucideGavel [size]="22"></svg>
+            </div>
+            <div>
+              <strong>Aste online</strong>
+              <small>Partecipa o crea aste in tempo reale</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,17 @@
+# File di configurazione di IntelliJ
+.idea/
+*.iml
+out/
+
+# File compilati del Backend
+target/
+*.class
+
+# Dipendenze del Frontend (fondamentale non caricarle!)
+node_modules/
+dist/
+build/
+.env
+
+# File di sistema Mac
+.DS_Store

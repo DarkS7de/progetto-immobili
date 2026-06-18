@@ -1,0 +1,100 @@
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>I miei annunci</h2>
+    <a routerLink="/venditore/nuovo-annuncio" class="btn btn-success">
+      + Nuovo annuncio
+    </a>
+  </div>
+
+  <div *ngIf="caricamento()" class="alert alert-info">Caricamento...</div>
+  <div *ngIf="errore()" class="alert alert-danger">{{ errore() }}</div>
+
+  <div *ngIf="!caricamento() && annunci().length === 0" class="alert alert-warning">
+    Non hai ancora pubblicato annunci. Inizia adesso!
+  </div>
+
+  <table *ngIf="annunci().length > 0" class="table table-hover align-middle">
+    <thead class="table-light">
+    <tr>
+      <th>Codice</th>
+      <th>Titolo</th>
+      <th>Tipo</th>
+      <th>Prezzo</th>
+      <th>m²</th>
+      <th>Azioni</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let a of annunci()">
+      <td><small>{{ a.codice }}</small></td>
+      <td>
+        <a [routerLink]="['/annunci', a.id]">{{ a.titolo }}</a>
+      </td>
+      <td>
+        <span class="badge bg-secondary">{{ a.tipoTransazione }}</span>
+      </td>
+      <td>
+          <span *ngIf="a.prezzoVecchio" class="text-decoration-line-through text-muted small d-block">
+            € {{ a.prezzoVecchio }}
+          </span>
+        <strong class="text-success">€ {{ a.prezzo }}</strong>
+      </td>
+      <td>{{ a.metriQuadri }}</td>
+      <td>
+        <div class="btn-group btn-group-sm mb-1" role="group">
+          <a [routerLink]="['/venditore/modifica', a.id]" class="btn btn-outline-primary">
+            Modifica
+          </a>
+          <button class="btn btn-outline-warning" (click)="ribassa(a)">
+            Ribassa
+          </button>
+          <button class="btn btn-outline-danger" (click)="elimina(a)">
+            Elimina
+          </button>
+        </div>
+        <div class="d-flex gap-1">
+          <label class="btn btn-outline-secondary btn-sm">
+            📷 Foto
+            <input type="file" accept="image/*" hidden (change)="caricaFoto(a, $event)">
+          </label>
+          <button class="btn btn-outline-info btn-sm" (click)="apriModalAsta(a)">
+            🔨 Crea asta
+          </button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- MODALE CREA ASTA -->
+<div *ngIf="mostraModalAsta()" class="modale-overlay" (click)="chiudiModalAsta()">
+  <div class="modale-contenuto" (click)="$event.stopPropagation()">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Crea asta</h4>
+      <button class="btn-close" (click)="chiudiModalAsta()"></button>
+    </div>
+
+    <p class="text-muted small">Per: {{ annuncioPerAsta?.titolo }}</p>
+
+    <form (ngSubmit)="creaAsta()" #fa="ngForm">
+      <div class="mb-3">
+        <label class="form-label">Data e ora inizio *</label>
+        <input type="datetime-local" class="form-control" name="inizio" [(ngModel)]="formAsta.dataInizio" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Data e ora fine *</label>
+        <input type="datetime-local" class="form-control" name="fine" [(ngModel)]="formAsta.dataFine" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Offerta minima (€) *</label>
+        <input type="number" class="form-control" name="minima" [(ngModel)]="formAsta.offertaMinima" required min="1">
+      </div>
+
+      <div *ngIf="erroreAsta()" class="alert alert-danger py-2">{{ erroreAsta() }}</div>
+
+      <button type="submit" class="btn btn-primary w-100" [disabled]="!fa.valid">Crea asta</button>
+    </form>
+  </div>
+</div>

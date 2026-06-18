@@ -1,0 +1,336 @@
+/* =============================================================
+   IMMOBILI — Glassmorphism luminoso
+   ============================================================= */
+
+:root {
+  /* Brand */
+  --brand: #5b5fc7;
+  --brand-dark: #4448a5;
+  --brand-light: #eef0fc;
+
+  /* Neutri */
+  --text: #1a1d29;
+  --text-muted: #6b7088;
+  --border: rgba(228, 230, 239, 0.6);
+
+  /* Stati */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #0ea5e9;
+
+  /* Raggi e ombre */
+  --radius-sm: 10px;
+  --radius: 14px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 2px rgba(20, 25, 50, 0.04);
+  --shadow: 0 8px 32px rgba(91, 95, 199, 0.12);
+  --shadow-lg: 0 20px 60px rgba(91, 95, 199, 0.18);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+  /* Sfondo azzurro pastello uniforme con sfumature soft */
+  background:
+    radial-gradient(ellipse at top left, #e0eaff 0%, transparent 60%),
+    radial-gradient(ellipse at bottom right, #d4e4ff 0%, transparent 60%),
+    linear-gradient(135deg, #eef3ff 0%, #f8fbff 50%, #e8efff 100%);
+  background-attachment: fixed;
+}
+
+app-root, .container { position: relative; z-index: 1; }
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+h1 { font-size: 2rem; }
+h2 { font-size: 1.6rem; }
+h3 { font-size: 1.3rem; }
+h4 { font-size: 1.15rem; }
+
+/* =============================================================
+   NAVBAR — vetro lucido con bordo brillante
+   ============================================================= */
+.navbar {
+  background: linear-gradient(180deg,
+  rgba(255, 255, 255, 0.55) 0%,
+  rgba(255, 255, 255, 0.25) 100%
+  ) !important;
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 8px 32px -8px rgba(91, 95, 199, 0.08);
+  padding-top: 14px;
+  padding-bottom: 14px;
+  position: sticky;
+  top: 0;
+}
+.navbar.bg-primary { background: inherit !important; }
+.navbar-brand {
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--text) !important;
+}
+.navbar .nav-link {
+  color: var(--text-muted) !important;
+  font-weight: 500;
+  padding: 8px 16px !important;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+}
+.navbar .nav-link:hover {
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--brand) !important;
+}
+.navbar .nav-link.active {
+  background: rgba(238, 240, 252, 0.8);
+  color: var(--brand) !important;
+  font-weight: 600;
+}
+.navbar-text { color: var(--text) !important; }
+.navbar .btn-outline-primary {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+}
+.navbar .badge.bg-primary {
+  background: rgba(238, 240, 252, 0.9) !important;
+  color: var(--brand) !important;
+}
+
+/* =============================================================
+   CARD — vetro lucido con highlight in alto
+   ============================================================= */
+.card {
+  background: linear-gradient(135deg,
+  rgba(255, 255, 255, 0.6) 0%,
+  rgba(255, 255, 255, 0.25) 100%
+  ) !important;
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 8px 32px rgba(91, 95, 199, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  transition: box-shadow 0.3s, transform 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Riflesso luminoso diagonale stile "highlight" lucido */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(180deg,
+  rgba(255, 255, 255, 0.6) 0%,
+  rgba(255, 255, 255, 0.1) 50%,
+  transparent 100%
+  );
+  pointer-events: none;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+/* Riflesso obliquo per dare l'effetto "lucido" tipo vetro */
+.card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(135deg,
+  transparent 35%,
+  rgba(255, 255, 255, 0.25) 50%,
+  transparent 65%
+  );
+  pointer-events: none;
+  transform: rotate(0deg);
+}
+
+.card-body {
+  padding: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.card-title { font-weight: 700; font-size: 1.1rem; }
+
+.card:hover {
+  box-shadow:
+    0 20px 60px rgba(91, 95, 199, 0.18),
+    inset 0 1px 1px rgba(255, 255, 255, 1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+/* =============================================================
+   BOTTONI — più "tattili" con riflesso
+   ============================================================= */
+.btn {
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  padding: 9px 20px;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary {
+  background: linear-gradient(180deg, #6b6fd6 0%, var(--brand) 100%);
+  border-color: var(--brand);
+  box-shadow:
+    0 4px 14px rgba(91, 95, 199, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.btn-primary:hover, .btn-primary:focus {
+  background: linear-gradient(180deg, var(--brand) 0%, var(--brand-dark) 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    0 8px 24px rgba(91, 95, 199, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.btn-success {
+  background: linear-gradient(180deg, #34d399 0%, var(--success) 100%);
+  border-color: var(--success);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+}
+.btn-warning {
+  background: linear-gradient(180deg, #fbbf24 0%, var(--warning) 100%);
+  border-color: var(--warning);
+  color: white;
+}
+.btn-danger {
+  background: linear-gradient(180deg, #f87171 0%, var(--danger) 100%);
+  border-color: var(--danger);
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+}
+
+.btn-outline-primary {
+  color: var(--brand);
+  border-color: rgba(91, 95, 199, 0.4);
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+}
+.btn-outline-primary:hover {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: white;
+}
+
+/* =============================================================
+   BADGE
+   ============================================================= */
+.badge {
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 5px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(10px);
+}
+.badge.bg-secondary { background: rgba(228, 230, 239, 0.8) !important; color: var(--text) !important; }
+.badge.bg-info      { background: rgba(224, 242, 254, 0.9) !important; color: #0369a1 !important; }
+.badge.bg-success   { background: rgba(209, 250, 229, 0.9) !important; color: #065f46 !important; }
+.badge.bg-warning   { background: rgba(254, 243, 199, 0.9) !important; color: #92400e !important; }
+.badge.bg-danger    { background: rgba(254, 226, 226, 0.9) !important; color: #991b1b !important; }
+.badge.bg-primary   { background: rgba(238, 240, 252, 0.9) !important; color: var(--brand) !important; }
+
+/* =============================================================
+   FORM — input con vetro
+   ============================================================= */
+.form-control, .form-select {
+  border: 1px solid rgba(228, 230, 239, 0.8);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  transition: all 0.2s;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 4px rgba(91, 95, 199, 0.12);
+  background: rgba(255, 255, 255, 0.9);
+}
+.form-label {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+/* =============================================================
+   TABELLE — vetro lucido
+   ============================================================= */
+.table {
+  background: linear-gradient(135deg,
+  rgba(255, 255, 255, 0.7) 0%,
+  rgba(255, 255, 255, 0.35) 100%
+  );
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow:
+    0 8px 32px rgba(91, 95, 199, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+.table > :not(caption) > * > * {
+  padding: 14px 16px;
+  border-bottom-color: rgba(228, 230, 239, 0.5);
+  background: transparent;
+}
+.table thead th {
+  background: rgba(250, 251, 255, 0.6) !important;
+  color: var(--text-muted) !important;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* =============================================================
+   ALERT — vetro colorato
+   ============================================================= */
+.alert {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  font-weight: 500;
+  backdrop-filter: blur(15px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.alert-info    { background: rgba(224, 242, 254, 0.6); color: #0369a1; }
+.alert-success { background: rgba(209, 250, 229, 0.6); color: #065f46; }
+.alert-warning { background: rgba(254, 243, 199, 0.6); color: #92400e; }
+.alert-danger  { background: rgba(254, 226, 226, 0.6); color: #991b1b; }
+.alert-light   { background: rgba(255, 255, 255, 0.4); color: var(--text-muted); }
+
+a { color: var(--brand); }
+a:hover { color: var(--brand-dark); }
+
+.text-success { color: var(--success) !important; }
+.text-muted { color: var(--text-muted) !important; }
+
+.container { max-width: 1200px; }

@@ -1,0 +1,122 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Ricerca immobili</h2>
+
+  <div class="row">
+
+    <!-- COLONNA FILTRI -->
+    <div class="col-md-3 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Filtri</h5>
+
+          <div class="mb-3">
+            <label class="form-label">Cerca per testo</label>
+            <input type="text" class="form-control" [(ngModel)]="filtri.testo" placeholder="Parole chiave...">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Località</label>
+            <input type="text" class="form-control" [(ngModel)]="filtri.localita" placeholder="Es. Catania, Roma...">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Tipo</label>
+            <select class="form-select" [(ngModel)]="filtri.tipo">
+              <option value="">Tutti</option>
+              <option value="VENDITA">Vendita</option>
+              <option value="AFFITTO">Affitto</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Categoria</label>
+            <select class="form-select" [(ngModel)]="filtri.categoriaId">
+              <option [ngValue]="null">Tutte</option>
+              <option *ngFor="let c of categorie()" [ngValue]="c.id">{{ c.nome }}</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Prezzo (€)</label>
+            <div class="d-flex gap-2">
+              <input type="number" class="form-control form-control-sm" [(ngModel)]="filtri.prezzoMin" placeholder="Min">
+              <input type="number" class="form-control form-control-sm" [(ngModel)]="filtri.prezzoMax" placeholder="Max">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Metri quadri</label>
+            <div class="d-flex gap-2">
+              <input type="number" class="form-control form-control-sm" [(ngModel)]="filtri.mqMin" placeholder="Min">
+              <input type="number" class="form-control form-control-sm" [(ngModel)]="filtri.mqMax" placeholder="Max">
+            </div>
+          </div>
+
+          <button class="btn btn-primary w-100 mb-2" (click)="cerca()">Cerca</button>
+          <button class="btn btn-outline-secondary w-100" (click)="resetFiltri()">Azzera filtri</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLONNA RISULTATI -->
+    <div class="col-md-9">
+
+      <div *ngIf="caricamento()" class="alert alert-info">Ricerca in corso...</div>
+
+      <div *ngIf="!caricamento() && ricercaEffettuata()" class="d-flex justify-content-between align-items-center mb-3">
+        <div class="text-muted">
+          {{ risultati().length }} risultat{{ risultati().length === 1 ? 'o' : 'i' }}
+        </div>
+        <div class="d-flex gap-2 align-items-center">
+          <label class="text-muted small mb-0">Ordina per:</label>
+          <select class="form-select form-select-sm w-auto" [(ngModel)]="ordinaPer" (change)="cambiaOrdinamento()">
+            <option value="recenti">Più recenti</option>
+            <option value="prezzo">Prezzo</option>
+            <option value="mq">Metri quadri</option>
+          </select>
+          <select class="form-select form-select-sm w-auto" [(ngModel)]="ordineCrescente" (change)="cambiaOrdinamento()">
+            <option [ngValue]="true">Crescente</option>
+            <option [ngValue]="false">Decrescente</option>
+          </select>
+        </div>
+      </div>
+
+      <div *ngIf="!ricercaEffettuata() && !caricamento()" class="alert alert-light text-center">
+        Usa i filtri a sinistra per iniziare la ricerca, oppure clicca "Cerca" per vedere tutti gli annunci.
+      </div>
+
+      <div *ngIf="ricercaEffettuata() && !caricamento() && risultati().length === 0" class="alert alert-warning">
+        Nessun annuncio corrisponde ai filtri selezionati.
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-4" *ngFor="let a of risultati()">
+          <a [routerLink]="['/annunci', a.id]" class="text-decoration-none text-dark">
+            <div class="card h-100 card-cliccabile">
+              <div class="card-body">
+                <div class="mb-2">
+                  <span class="badge bg-secondary">{{ a.tipoTransazione }}</span>
+                  <span class="badge bg-info ms-1">{{ a.categoria.nome }}</span>
+                </div>
+                <h5 class="card-title mt-2">{{ a.titolo }}</h5>
+                <p class="card-text text-muted small">{{ a.codice }}</p>
+                <p class="card-text">{{ a.descrizione }}</p>
+
+                <p class="card-text">
+                  <span *ngIf="a.prezzoVecchio" class="text-decoration-line-through text-muted me-2">
+                    € {{ a.prezzoVecchio }}
+                  </span>
+                  <strong class="text-success fs-4">€ {{ a.prezzo }}</strong>
+                </p>
+
+                <p class="card-text">
+                  <small class="text-muted">{{ a.metriQuadri }} m² · {{ a.indirizzo }}</small>
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
