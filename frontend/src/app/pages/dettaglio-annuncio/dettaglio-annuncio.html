@@ -1,24 +1,15 @@
 <div class="container mt-4">
-
-  <!-- Link torna indietro -->
   <a routerLink="/" class="btn btn-link mb-3">&larr; Torna agli annunci</a>
-
-  <!-- Caricamento -->
   <div *ngIf="caricamento()" class="alert alert-info">
     Caricamento in corso...
   </div>
-
-  <!-- Errore -->
   <div *ngIf="errore()" class="alert alert-danger">
     {{ errore() }}
   </div>
-
-  <!-- Contenuto -->
   <div *ngIf="annuncio() as a">
 
     <div class="row">
       <div class="col-md-8">
-        <!-- Header -->
         <div class="d-flex align-items-center mb-2">
           <span class="badge bg-secondary me-2">{{ a.tipoTransazione }}</span>
           <span class="badge bg-info">{{ a.categoria.nome }}</span>
@@ -31,7 +22,6 @@
           📍 {{ a.indirizzo }} · {{ a.metriQuadri }} m²
         </p>
 
-        <!-- Prezzo con barrato per i ribassi -->
         <div class="mb-4">
           <span *ngIf="a.prezzoVecchio" class="text-decoration-line-through text-muted me-3 fs-4">
             € {{ a.prezzoVecchio }}
@@ -40,7 +30,6 @@
           <span *ngIf="a.prezzoVecchio" class="badge bg-danger ms-2 align-middle">PREZZO RIBASSATO</span>
         </div>
 
-        <!-- Galleria foto -->
         <div *ngIf="foto().length > 0" class="mb-4">
           <img [src]="urlFoto(fotoSelezionata())" class="foto-principale mb-2" alt="Foto immobile">
 
@@ -71,7 +60,6 @@
         <h4 class="mt-4">Posizione</h4>
         <div id="mappa-immobile" class="mappa-container mb-4"></div>
 
-        <!-- SEZIONE RECENSIONI -->
         <h4 class="mt-5">
           Recensioni
           <span *ngIf="recensioni().length > 0" class="text-warning ms-2">
@@ -137,7 +125,6 @@
 
       </div>
 
-      <!-- Sidebar -->
       <div class="col-md-4">
         <div class="card">
           <div class="card-body">
@@ -150,7 +137,6 @@
               Contatta il venditore
             </button>
 
-            <!-- Promozione Facebook (solo proprietario/admin) -->
             <button *ngIf="isProprietarioOAdmin()"
                     class="btn btn-outline-primary w-100 mt-2"
                     (click)="promuoviSuFacebook()">
@@ -159,7 +145,6 @@
           </div>
         </div>
 
-        <!-- BOX ASTA -->
         <div *ngIf="asta() as ast" class="card mt-3 border-warning">
           <div class="card-body">
             <h5 class="card-title">
@@ -224,7 +209,6 @@
           </div>
         </div>
 
-        <!-- Dettagli -->
         <div class="card mt-3">
           <div class="card-body">
             <h5 class="card-title">Dettagli</h5>
@@ -241,7 +225,6 @@
 
   </div>
 
-  <!-- MODALE CONTATTO VENDITORE -->
   <div *ngIf="mostraFormContatto()" class="modale-overlay" (click)="chiudiFormContatto()">
     <div class="modale-contenuto" (click)="$event.stopPropagation()">
 
@@ -290,5 +273,4 @@
       </form>
     </div>
   </div>
-
 </div>

@@ -22,7 +22,7 @@ public class Annuncio {
     private Long id;
 
     @Column(nullable = false, unique = true, length = 20)
-    private String codice;     // es. "ANN-2026-0001"
+    private String codice;
 
     @Column(nullable = false, length = 200)
     private String titolo;
@@ -58,27 +58,20 @@ public class Annuncio {
     @Column(nullable = false)
     private Boolean attivo = true;
 
-    // RELAZIONE molti-a-uno con Utente (un venditore ha molti annunci)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "venditore_id", nullable = false)
-    @JsonIgnoreProperties({"password"})  // non esporre la password nel JSON
+    @JsonIgnoreProperties({"password"})
     private Utente venditore;
 
-    // RELAZIONE molti-a-uno con Categoria
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
-    // RELAZIONE uno-a-molti con Foto.
-    // FetchType.LAZY = Hibernate restituisce un proxy invece della lista vera;
-    // la lista viene popolata solo se chiamo annuncio.getFoto().
     @OneToMany(mappedBy = "annuncio", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Foto> foto = new ArrayList<>();
 
-    // Costruttori
     public Annuncio() {}
 
-    // Getter e Setter
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

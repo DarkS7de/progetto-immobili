@@ -16,7 +16,6 @@ public class Categoria {
     @Column(length = 255)
     private String descrizione;
 
-    // Costruttori
     public Categoria() {}
 
     public Categoria(String nome, String descrizione) {
@@ -24,7 +23,6 @@ public class Categoria {
         this.descrizione = descrizione;
     }
 
-    // Getter e Setter
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

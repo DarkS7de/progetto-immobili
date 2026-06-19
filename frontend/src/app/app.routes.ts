@@ -20,6 +20,6 @@ export const routes: Routes = [
   { path: 'venditore/messaggi', component: Messaggi },
   { path: 'ricerca', component: Ricerca },
   { path: 'admin', component: Admin },
-  //questa deve restare l'ultima riga
+  //questa deve restare l'ultima riga, sennò non vengono integrati i path
   { path: '**', redirectTo: '' }
 ];

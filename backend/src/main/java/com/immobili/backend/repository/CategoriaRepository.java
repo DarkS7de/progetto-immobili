@@ -9,6 +9,5 @@ import java.util.Optional;
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
-    // Spring Data deduce la query dal nome del metodo: SELECT * FROM categoria WHERE nome = ?
     Optional<Categoria> findByNome(String nome);
 }

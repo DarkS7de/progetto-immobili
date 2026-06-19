@@ -10,8 +10,6 @@ export class AnnuncioService {
 
   constructor(private http: HttpClient) {}
 
-  // ============ LETTURA ============
-
   getAll(): Observable<Annuncio[]> {
     return this.http.get<Annuncio[]>(this.apiUrl);
   }
@@ -40,8 +38,6 @@ export class AnnuncioService {
     });
     return this.http.get<Annuncio[]>(`${this.apiUrl}/ricerca`, { params });
   }
-
-  // ============ SCRITTURA ============
 
   crea(annuncio: Partial<Annuncio>, venditoreId: number): Observable<Annuncio> {
     return this.http.post<Annuncio>(`${this.apiUrl}?venditoreId=${venditoreId}`, annuncio);

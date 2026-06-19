@@ -9,9 +9,7 @@ import java.util.List;
 @Repository
 public interface MessaggioRepository extends JpaRepository<Messaggio, Long> {
 
-    // Messaggi ricevuti da un venditore, più recenti prima
     List<Messaggio> findByDestinatarioIdOrderByDataDesc(Long destinatarioId);
 
-    // Conta i non letti (per il badge in navbar)
     long countByDestinatarioIdAndLettoFalse(Long destinatarioId);
 }

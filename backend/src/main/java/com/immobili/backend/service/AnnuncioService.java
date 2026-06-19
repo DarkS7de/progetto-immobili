@@ -22,16 +22,11 @@ public class AnnuncioService {
     @Autowired
     private UtenteRepository utenteRepository;
 
-    // ================================================================
-    // CREAZIONE ANNUNCIO con generazione automatica del codice
-    // ================================================================
     @Transactional
     public Annuncio creaAnnuncio(Annuncio annuncio, Long venditoreId) {
-        // 1) Verifico che il venditore esista
         Utente venditore = utenteRepository.findById(venditoreId)
                 .orElseThrow(() -> new IllegalArgumentException("Venditore non trovato"));
 
-        // 2) Verifico che sia effettivamente un VENDITORE (o ADMIN)
         if (venditore.getRuolo() == Utente.Ruolo.ACQUIRENTE) {
             throw new IllegalStateException("Gli acquirenti non possono creare annunci");
         }
@@ -39,11 +34,10 @@ public class AnnuncioService {
             throw new IllegalStateException("Utente bannato, impossibile creare annunci");
         }
 
-        // 3) Genero il codice univoco tipo ANN-2026-0042
         annuncio.setCodice(generaProssimoCodice());
         annuncio.setVenditore(venditore);
         annuncio.setAttivo(true);
-        annuncio.setPrezzoVecchio(null);  // alla creazione non c'e' prezzo vecchio
+        annuncio.setPrezzoVecchio(null);
 
         return annuncioRepository.save(annuncio);
     }
@@ -54,9 +48,6 @@ public class AnnuncioService {
         return String.format("ANN-%d-%04d", anno, count);
     }
 
-    // ================================================================
-    // MODIFICA ANNUNCIO - solo proprietario o admin
-    // ================================================================
     @Transactional
     public Annuncio modificaAnnuncio(Long annuncioId, Annuncio datiNuovi, Long utenteRichiedente) {
         Annuncio esistente = annuncioRepository.findById(annuncioId)
@@ -64,7 +55,6 @@ public class AnnuncioService {
 
         verificaPermessoModifica(esistente, utenteRichiedente);
 
-        // Aggiorno solo i campi modificabili (NON id, codice, venditore, data)
         esistente.setTitolo(datiNuovi.getTitolo());
         esistente.setDescrizione(datiNuovi.getDescrizione());
         esistente.setMetriQuadri(datiNuovi.getMetriQuadri());
@@ -74,15 +64,9 @@ public class AnnuncioService {
         esistente.setTipoTransazione(datiNuovi.getTipoTransazione());
         esistente.setCategoria(datiNuovi.getCategoria());
 
-        // NOTA: il prezzo NON si modifica qui. Per cambiarlo c'è ribassaPrezzo()
-        // così non si rischia di perdere lo storico del prezzo vecchio.
-
         return annuncioRepository.save(esistente);
     }
 
-    // ================================================================
-    // RIBASSO PREZZO - funzionalità richiesta dalla traccia
-    // ================================================================
     @Transactional
     public Annuncio ribassaPrezzo(Long annuncioId, BigDecimal nuovoPrezzo, Long utenteRichiedente) {
         Annuncio annuncio = annuncioRepository.findById(annuncioId)
@@ -90,23 +74,18 @@ public class AnnuncioService {
 
         verificaPermessoModifica(annuncio, utenteRichiedente);
 
-        // Validazione: il nuovo prezzo deve essere strettamente minore del vecchio
         if (nuovoPrezzo.compareTo(annuncio.getPrezzo()) >= 0) {
             throw new IllegalArgumentException(
                     "Il nuovo prezzo deve essere inferiore al prezzo attuale (" + annuncio.getPrezzo() + ")"
             );
         }
 
-        // Salvo il prezzo attuale come "vecchio prezzo" (sarà mostrato barrato lato frontend)
         annuncio.setPrezzoVecchio(annuncio.getPrezzo());
         annuncio.setPrezzo(nuovoPrezzo);
 
         return annuncioRepository.save(annuncio);
     }
 
-    // ================================================================
-    // CANCELLAZIONE - solo proprietario o admin
-    // ================================================================
     @Transactional
     public void eliminaAnnuncio(Long annuncioId, Long utenteRichiedente) {
         Annuncio annuncio = annuncioRepository.findById(annuncioId)
@@ -116,9 +95,6 @@ public class AnnuncioService {
         annuncioRepository.delete(annuncio);
     }
 
-    // ================================================================
-    // METODI di sola lettura (delego al repository)
-    // ================================================================
     public List<Annuncio> tuttiAttivi() {
         return annuncioRepository.findByAttivoTrue();
     }
@@ -134,9 +110,6 @@ public class AnnuncioService {
         return annuncioRepository.ricercaAvanzata(tipo, categoriaId, prezzoMin, prezzoMax, mqMin, mqMax);
     }
 
-    // ================================================================
-    // HELPER privato: controllo permessi (proprietario OPPURE admin)
-    // ================================================================
     private void verificaPermessoModifica(Annuncio annuncio, Long utenteRichiedente) {
         Utente richiedente = utenteRepository.findById(utenteRichiedente)
                 .orElseThrow(() -> new IllegalArgumentException("Utente non trovato"));

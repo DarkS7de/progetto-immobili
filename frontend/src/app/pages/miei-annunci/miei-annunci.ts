@@ -66,7 +66,6 @@ export class MieiAnnunci implements OnInit {
   }
 
   ngOnInit(): void {
-    // Solo venditori e admin possono vedere questa pagina
     const utente = this.authService.utenteCorrente();
     if (!utente || utente.ruolo === 'ACQUIRENTE') {
       this.router.navigate(['/']);

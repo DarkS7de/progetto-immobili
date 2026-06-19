@@ -1,25 +1,17 @@
-/* =============================================================
-   IMMOBILI — Glassmorphism luminoso
-   ============================================================= */
-
 :root {
-  /* Brand */
   --brand: #5b5fc7;
   --brand-dark: #4448a5;
   --brand-light: #eef0fc;
 
-  /* Neutri */
   --text: #1a1d29;
   --text-muted: #6b7088;
   --border: rgba(228, 230, 239, 0.6);
 
-  /* Stati */
   --success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
   --info: #0ea5e9;
 
-  /* Raggi e ombre */
   --radius-sm: 10px;
   --radius: 14px;
   --radius-lg: 20px;
@@ -36,7 +28,6 @@ body {
   -webkit-font-smoothing: antialiased;
   position: relative;
   overflow-x: hidden;
-  /* Sfondo azzurro pastello uniforme con sfumature soft */
   background:
     radial-gradient(ellipse at top left, #e0eaff 0%, transparent 60%),
     radial-gradient(ellipse at bottom right, #d4e4ff 0%, transparent 60%),
@@ -62,9 +53,6 @@ h2 { font-size: 1.6rem; }
 h3 { font-size: 1.3rem; }
 h4 { font-size: 1.15rem; }
 
-/* =============================================================
-   NAVBAR — vetro lucido con bordo brillante
-   ============================================================= */
 .navbar {
   background: linear-gradient(180deg,
   rgba(255, 255, 255, 0.55) 0%,
@@ -114,9 +102,6 @@ h4 { font-size: 1.15rem; }
   color: var(--brand) !important;
 }
 
-/* =============================================================
-   CARD — vetro lucido con highlight in alto
-   ============================================================= */
 .card {
   background: linear-gradient(135deg,
   rgba(255, 255, 255, 0.6) 0%,
@@ -135,7 +120,6 @@ h4 { font-size: 1.15rem; }
   overflow: hidden;
 }
 
-/* Riflesso luminoso diagonale stile "highlight" lucido */
 .card::before {
   content: '';
   position: absolute;
@@ -152,7 +136,6 @@ h4 { font-size: 1.15rem; }
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
-/* Riflesso obliquo per dare l'effetto "lucido" tipo vetro */
 .card::after {
   content: '';
   position: absolute;
@@ -184,9 +167,6 @@ h4 { font-size: 1.15rem; }
     inset 0 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
-/* =============================================================
-   BOTTONI — più "tattili" con riflesso
-   ============================================================= */
 .btn {
   border-radius: var(--radius-sm);
   font-weight: 600;
@@ -237,9 +217,6 @@ h4 { font-size: 1.15rem; }
   color: white;
 }
 
-/* =============================================================
-   BADGE
-   ============================================================= */
 .badge {
   font-weight: 600;
   font-size: 0.75rem;
@@ -255,9 +232,6 @@ h4 { font-size: 1.15rem; }
 .badge.bg-danger    { background: rgba(254, 226, 226, 0.9) !important; color: #991b1b !important; }
 .badge.bg-primary   { background: rgba(238, 240, 252, 0.9) !important; color: var(--brand) !important; }
 
-/* =============================================================
-   FORM — input con vetro
-   ============================================================= */
 .form-control, .form-select {
   border: 1px solid rgba(228, 230, 239, 0.8);
   border-radius: var(--radius-sm);
@@ -279,9 +253,6 @@ h4 { font-size: 1.15rem; }
   margin-bottom: 6px;
 }
 
-/* =============================================================
-   TABELLE — vetro lucido
-   ============================================================= */
 .table {
   background: linear-gradient(135deg,
   rgba(255, 255, 255, 0.7) 0%,
@@ -310,9 +281,6 @@ h4 { font-size: 1.15rem; }
   letter-spacing: 0.05em;
 }
 
-/* =============================================================
-   ALERT — vetro colorato
-   ============================================================= */
 .alert {
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: var(--radius);

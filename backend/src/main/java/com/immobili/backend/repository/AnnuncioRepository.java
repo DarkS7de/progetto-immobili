@@ -13,23 +13,16 @@ import java.util.List;
 @Repository
 public interface AnnuncioRepository extends JpaRepository<Annuncio, Long> {
 
-    // Annunci attivi (utile per la home)
     List<Annuncio> findByAttivoTrue();
 
-    // Annunci di un venditore
     List<Annuncio> findByVenditoreId(Long venditoreId);
 
-    // Ricerca per categoria
     List<Annuncio> findByCategoriaId(Long categoriaId);
 
-    // Ricerca per tipo transazione (VENDITA / AFFITTO)
     List<Annuncio> findByTipoTransazione(TipoTransazione tipo);
 
-    // Ricerca per codice (univoco)
     Annuncio findByCodice(String codice);
 
-    // Ricerca filtrata flessibile: tutti i parametri sono opzionali, se null vengono ignorati.
-    // Questa serve per la pagina "Cerca immobili" lato acquirente.
     @Query("""
             SELECT a FROM Annuncio a
             WHERE a.attivo = true

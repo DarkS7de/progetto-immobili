@@ -22,7 +22,7 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private annuncioService = inject(AnnuncioService);
   private fotoService = inject(FotoService);
-  // tolto private perchè angular può accedere solo a campi pubblici
+  // tolto private perchè angular non riusciva ad accedere
   authService = inject(AuthService);
   private messaggioService = inject(MessaggioService);
   private recensioneService = inject(RecensioneService);
@@ -33,16 +33,13 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
   fotoSelezionata = signal<number>(0);
   caricamento = signal(true);
   errore = signal<string | null>(null);
-  // Form di contatto
   mostraFormContatto = signal(false);
   invioInCorso = signal(false);
   messaggioInviato = signal(false);
-  // Recensioni
   recensioni = signal<Recensione[]>([]);
   formRecensione = { testo: '', voto: 5 };
   invioRecensioneInCorso = signal(false);
   erroreRecensione = signal<string | null>(null);
-  // Asta
   asta = signal<Asta | null>(null);
   offerte = signal<Offerta[]>([]);
   importoOfferta: number | null = null;
@@ -84,7 +81,6 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
     });
   }
 
-  // È il proprietario dell'annuncio (o admin) → può vedere i contatti degli offerenti
   isProprietarioOAdmin(): boolean {
     const utente = this.authService.utenteCorrente();
     const a = this.annuncio();
@@ -99,7 +95,6 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
         this.caricaOfferte(a.id);
       },
       error: () => {
-        // 404 = nessuna asta per questo annuncio, è normale
         this.asta.set(null);
       }
     });
@@ -116,7 +111,7 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
 
     this.astaService.chiudi(a.id, utente.id).subscribe({
       next: (astaAggiornata) => {
-        this.asta.set(astaAggiornata);  // aggiorna lo stato (attiva = false)
+        this.asta.set(astaAggiornata);
       },
       error: (err) => {
         alert(err.error?.errore ?? 'Errore durante la chiusura dell\'asta');
@@ -128,13 +123,11 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
     this.astaService.getOfferte(astaId).subscribe(o => this.offerte.set(o));
   }
 
-  // Offerta più alta attuale
   offertaTop(): number {
     const o = this.offerte();
     return o.length > 0 ? o[0].importo : 0;
   }
 
-  // Può offrire: acquirente loggato, asta attiva e nel periodo valido
   puoOffrire(): boolean {
     const utente = this.authService.utenteCorrente();
     const a = this.asta();
@@ -155,7 +148,7 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
       next: () => {
         this.offertaInCorso.set(false);
         this.importoOfferta = null;
-        this.caricaOfferte(a.id);  // ricarico la classifica
+        this.caricaOfferte(a.id);
       },
       error: (err) => {
         this.offertaInCorso.set(false);
@@ -168,16 +161,13 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
     this.recensioneService.getByAnnuncio(annuncioId).subscribe(r => this.recensioni.set(r));
   }
 
-  // Può recensire: utente loggato, ruolo ACQUIRENTE, che non ha già recensito
   puoRecensire(): boolean {
     const utente = this.authService.utenteCorrente();
     if (!utente || utente.ruolo !== 'ACQUIRENTE') return false;
-    // Controllo che non abbia già recensito questo annuncio
     const giaRecensito = this.recensioni().some(r => r.acquirente.id === utente.id);
     return !giaRecensito;
   }
 
-  // Messaggio esplicativo del perché non può recensire
   motivoNoRecensione(): string {
     const utente = this.authService.utenteCorrente();
     if (!utente) return 'Accedi come acquirente per lasciare una recensione.';
@@ -202,7 +192,7 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
       next: () => {
         this.invioRecensioneInCorso.set(false);
         this.formRecensione = { testo: '', voto: 5 };
-        this.caricaRecensioni(a.id);   // ricarico la lista aggiornata
+        this.caricaRecensioni(a.id);
       },
       error: (err) => {
         this.invioRecensioneInCorso.set(false);
@@ -211,7 +201,6 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
     });
   }
 
-  // Media dei voti (per il riepilogo)
   mediaVoti(): number {
     const recs = this.recensioni();
     if (recs.length === 0) return 0;
@@ -219,7 +208,6 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
     return Math.round((somma / recs.length) * 10) / 10;
   }
 
-  // Helper per generare un array da usare con *ngFor per le stelline
   stelle(n: number): number[] {
     return Array(n).fill(0);
   }
@@ -238,7 +226,6 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
     this.fotoSelezionata.set(fotoId);
   }
 
-  // Può gestire le foto solo il proprietario dell'annuncio o un admin
   puoGestireFoto(): boolean {
     const utente = this.authService.utenteCorrente();
     const a = this.annuncio();
@@ -292,10 +279,8 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
     const a = this.annuncio();
     if (!a) return;
 
-    // Oggetto precompilato con codice + titolo, come richiede la traccia
     this.formContatto.oggetto = `${a.codice} - ${a.titolo}`;
 
-    // Se l'utente è loggato, precompilo i suoi dati
     const utente = this.authService.utenteCorrente();
     if (utente) {
       this.formContatto.nomeMittente = `${utente.nome} ${utente.cognome}`;
@@ -329,7 +314,6 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
       next: () => {
         this.invioInCorso.set(false);
         this.messaggioInviato.set(true);
-        // Pulisco il testo (lascio i dati anagrafici)
         this.formContatto.testo = '';
       },
       error: () => {
@@ -343,17 +327,12 @@ export class DettaglioAnnuncio implements OnInit, OnDestroy {
     const a = this.annuncio();
     if (!a) return;
 
-    // URL dell'annuncio (in produzione sarebbe il dominio pubblico,
-    // in locale usiamo l'indirizzo localhost)
     const urlAnnuncio = `${window.location.origin}/annunci/${a.id}`;
 
-    // Testo precompilato per il post
     const testo = `${a.titolo} - € ${a.prezzo} - ${a.metriQuadri} m² a ${a.indirizzo ?? ''}`;
 
-    // Share Dialog di Facebook (sharer.php): apre Facebook con il link da condividere
     const urlFacebook = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlAnnuncio)}&quote=${encodeURIComponent(testo)}`;
 
-    // Apre in una finestra popup
     window.open(urlFacebook, '_blank', 'width=600,height=500');
   }
 }

@@ -21,6 +21,7 @@ public class UtenteController {
     @Autowired
     private UtenteRepository utenteRepository;
 
+
     @GetMapping
     public List<Utente> getAll() {
         return utenteRepository.findAll();
@@ -33,7 +34,7 @@ public class UtenteController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // POST /api/utenti/registrazione
+
     @PostMapping("/registrazione")
     public ResponseEntity<?> registra(@RequestBody Utente nuovo) {
         try {
@@ -44,7 +45,6 @@ public class UtenteController {
         }
     }
 
-    // POST /api/utenti/login   body: {"email": "...", "password": "..."}
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credenziali) {
         try {
@@ -56,7 +56,6 @@ public class UtenteController {
         }
     }
 
-    // POST /api/utenti/{id}/banna?adminId=1
     @PostMapping("/{id}/banna")
     public ResponseEntity<?> banna(@PathVariable Long id, @RequestParam Long adminId) {
         try {
@@ -68,7 +67,6 @@ public class UtenteController {
         }
     }
 
-    // POST /api/utenti/{id}/sbanna?adminId=1
     @PostMapping("/{id}/sbanna")
     public ResponseEntity<?> sbanna(@PathVariable Long id, @RequestParam Long adminId) {
         try {
@@ -80,7 +78,6 @@ public class UtenteController {
         }
     }
 
-    // POST /api/utenti/{id}/nomina-admin?adminId=1
     @PostMapping("/{id}/nomina-admin")
     public ResponseEntity<?> nominaAdmin(@PathVariable Long id, @RequestParam Long adminId) {
         try {

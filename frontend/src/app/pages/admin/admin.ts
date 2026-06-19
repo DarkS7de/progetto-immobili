@@ -20,7 +20,6 @@ export class Admin implements OnInit {
   messaggio = signal<string | null>(null);
 
   ngOnInit(): void {
-    // Solo gli admin accedono a questa pagina
     if (!this.authService.isAdmin()) {
       this.router.navigate(['/']);
       return;

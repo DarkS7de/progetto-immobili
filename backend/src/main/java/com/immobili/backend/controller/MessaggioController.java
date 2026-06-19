@@ -27,8 +27,7 @@ public class MessaggioController {
     @Autowired
     private UtenteRepository utenteRepository;
 
-    // POST /api/messaggi/annuncio/{annuncioId}
-    // body: { oggetto, testo, nomeMittente, emailMittente, telefonoMittente, mittenteId? }
+
     @PostMapping("/annuncio/{annuncioId}")
     public ResponseEntity<?> invia(@PathVariable Long annuncioId, @RequestBody Map<String, Object> body) {
         Annuncio annuncio = annuncioRepository.findById(annuncioId).orElse(null);
@@ -43,9 +42,8 @@ public class MessaggioController {
         msg.setEmailMittente((String) body.get("emailMittente"));
         msg.setTelefonoMittente((String) body.getOrDefault("telefonoMittente", null));
         msg.setAnnuncio(annuncio);
-        msg.setDestinatario(annuncio.getVenditore());  // il destinatario è sempre il venditore
+        msg.setDestinatario(annuncio.getVenditore());
 
-        // Se chi scrive è loggato, salvo anche il suo id
         if (body.get("mittenteId") != null) {
             Long mittenteId = Long.valueOf(body.get("mittenteId").toString());
             Utente mittente = utenteRepository.findById(mittenteId).orElse(null);
@@ -56,19 +54,18 @@ public class MessaggioController {
         return ResponseEntity.ok(Map.of("id", salvato.getId(), "messaggio", "Messaggio inviato"));
     }
 
-    // GET /api/messaggi/ricevuti/{utenteId}
+
     @GetMapping("/ricevuti/{utenteId}")
     public List<Messaggio> ricevuti(@PathVariable Long utenteId) {
         return messaggioRepository.findByDestinatarioIdOrderByDataDesc(utenteId);
     }
 
-    // GET /api/messaggi/non-letti/{utenteId}
     @GetMapping("/non-letti/{utenteId}")
     public Map<String, Long> nonLetti(@PathVariable Long utenteId) {
         return Map.of("count", messaggioRepository.countByDestinatarioIdAndLettoFalse(utenteId));
     }
 
-    // PATCH /api/messaggi/{id}/letto
+
     @PatchMapping("/{id}/letto")
     public ResponseEntity<?> segnaLetto(@PathVariable Long id) {
         return messaggioRepository.findById(id)

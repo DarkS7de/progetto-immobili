@@ -43,7 +43,6 @@
   text-decoration: underline;
 }
 
-/* Pannello destro con effetto glass + bolle */
 .auth-promo-side {
   background: linear-gradient(135deg, #5b5fc7 0%, #7c5cff 50%, #a78bfa 100%);
   color: white;

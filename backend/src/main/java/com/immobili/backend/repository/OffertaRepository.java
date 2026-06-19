@@ -12,6 +12,5 @@ public interface OffertaRepository extends JpaRepository<Offerta, Long> {
 
     List<Offerta> findByAstaIdOrderByImportoDesc(Long astaId);
 
-    // L'offerta più alta su un'asta = la prima dopo ORDER BY importo DESC
     Optional<Offerta> findFirstByAstaIdOrderByImportoDesc(Long astaId);
 }

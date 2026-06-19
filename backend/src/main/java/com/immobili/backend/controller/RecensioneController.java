@@ -16,20 +16,20 @@ public class RecensioneController {
     @Autowired
     private RecensioneRepository recensioneRepository;
 
-    // GET /api/recensioni/annuncio/{id}
+
     @GetMapping("/annuncio/{annuncioId}")
     public List<Recensione> getByAnnuncio(@PathVariable Long annuncioId) {
         return recensioneRepository.findByAnnuncioIdOrderByDataDesc(annuncioId);
     }
 
-    // POST /api/recensioni  (per ora senza controlli, li aggiungeremo nello step Service)
+
     @PostMapping
     public ResponseEntity<Recensione> crea(@RequestBody Recensione recensione) {
         Recensione salvata = recensioneRepository.save(recensione);
         return ResponseEntity.ok(salvata);
     }
 
-    // DELETE /api/recensioni/{id}
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> elimina(@PathVariable Long id) {
         if (!recensioneRepository.existsById(id)) {

@@ -13,7 +13,6 @@ import { LucideHouse, LucideBriefcase, LucideZap, LucideMessageCircle, LucideTre
 })
 export class Registrazione {
 
-  // Modello del form (campi inizialmente vuoti)
   form = {
     email: '',
     password: '',
@@ -37,7 +36,6 @@ export class Registrazione {
 
     this.authService.registra(this.form).subscribe({
       next: () => {
-        // Dopo la registrazione faccio login automatico
         this.authService.login(this.form.email, this.form.password).subscribe({
           next: () => {
             this.inCorso.set(false);
@@ -45,7 +43,6 @@ export class Registrazione {
           },
           error: () => {
             this.inCorso.set(false);
-            // Se per qualche motivo il login fallisce, mando alla pagina di login
             this.router.navigate(['/login']);
           }
         });

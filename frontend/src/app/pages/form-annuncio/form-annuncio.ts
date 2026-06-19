@@ -47,10 +47,8 @@ export class FormAnnuncio implements OnInit {
       return;
     }
 
-    // Carico le categorie per il dropdown
     this.categoriaService.getAll().subscribe(cats => this.categorie.set(cats));
 
-    // Controllo se siamo in modalità modifica
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       this.modalitaModifica.set(true);

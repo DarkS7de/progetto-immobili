@@ -29,13 +29,11 @@ public class FotoController {
     @Autowired
     private AnnuncioRepository annuncioRepository;
 
-    // GET metadati foto di un annuncio (passa dal Proxy)
     @GetMapping("/annuncio/{annuncioId}")
     public List<Foto> getByAnnuncio(@PathVariable Long annuncioId) {
         return fotoService.getMetadatiByAnnuncio(annuncioId);
     }
 
-    // GET i byte di una foto come immagine (passa dal Proxy con caching)
     @GetMapping("/{id}/raw")
     public ResponseEntity<byte[]> getRawImage(@PathVariable Long id) {
         var metadati = fotoService.getFotoMetadati(id);
@@ -49,8 +47,6 @@ public class FotoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // POST upload di una foto per un annuncio
-    // multipart/form-data con campo "file"
     @PostMapping("/annuncio/{annuncioId}")
     public ResponseEntity<?> upload(
             @PathVariable Long annuncioId,
@@ -70,7 +66,6 @@ public class FotoController {
             foto.setAnnuncio(annuncio);
 
             Foto salvata = fotoRepository.save(foto);
-            // Restituisco solo l'id e i metadati, non i byte
             return ResponseEntity.ok(Map.of(
                     "id", salvata.getId(),
                     "nomeFile", salvata.getNomeFile(),
@@ -81,7 +76,6 @@ public class FotoController {
         }
     }
 
-    // DELETE una foto
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> elimina(@PathVariable Long id) {
         if (!fotoRepository.existsById(id)) {

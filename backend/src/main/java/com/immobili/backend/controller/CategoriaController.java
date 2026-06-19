@@ -10,19 +10,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/categorie")
-@CrossOrigin(origins = "http://localhost:4200")  // permette ad Angular di chiamarci
+@CrossOrigin(origins = "http://localhost:4200")
 public class CategoriaController {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    // GET /api/categorie  → lista di tutte le categorie
+
     @GetMapping
     public List<Categoria> getAll() {
         return categoriaRepository.findAll();
     }
 
-    // GET /api/categorie/{id}  → singola categoria per id
     @GetMapping("/{id}")
     public ResponseEntity<Categoria> getById(@PathVariable Long id) {
         return categoriaRepository.findById(id)

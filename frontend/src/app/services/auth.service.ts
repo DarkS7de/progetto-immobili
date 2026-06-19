@@ -9,35 +9,29 @@ export class AuthService {
   private apiUrl = 'http://localhost:8080/api/utenti';
   private readonly STORAGE_KEY = 'immobili_utente';
 
-  // Signal con l'utente attualmente loggato. Inizializzato dal localStorage.
   utenteCorrente = signal<Utente | null>(this.leggiDaStorage());
 
   constructor(private http: HttpClient) {}
 
-  // ============ REGISTRAZIONE ============
   registra(datiUtente: Partial<Utente> & { password: string }): Observable<Utente> {
     return this.http.post<Utente>(`${this.apiUrl}/registrazione`, datiUtente);
   }
 
-  // ============ LOGIN ============
   login(email: string, password: string): Observable<Utente> {
     return this.http.post<Utente>(`${this.apiUrl}/login`, { email, password })
       .pipe(
         tap(utente => {
-          // Dopo il login salvo l'utente in localStorage e aggiorno il signal
           this.salvaInStorage(utente);
           this.utenteCorrente.set(utente);
         })
       );
   }
 
-  // ============ LOGOUT ============
   logout(): void {
     localStorage.removeItem(this.STORAGE_KEY);
     this.utenteCorrente.set(null);
   }
 
-  // ============ HELPER ============
   isLoggato(): boolean {
     return this.utenteCorrente() !== null;
   }
@@ -62,8 +56,6 @@ export class AuthService {
     const stringa = localStorage.getItem(this.STORAGE_KEY);
     return stringa ? JSON.parse(stringa) : null;
   }
-
-  // ============ GESTIONE UTENTI (ADMIN) ============
 
   getTuttiUtenti(): Observable<Utente[]> {
     return this.http.get<Utente[]>(`${this.apiUrl}`);

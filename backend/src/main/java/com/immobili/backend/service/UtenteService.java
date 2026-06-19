@@ -15,38 +15,27 @@ public class UtenteService {
     @Autowired
     private UtenteRepository utenteRepository;
 
-    // BCrypt: standard de facto per l'hashing delle password.
-    // Genera hash diversi per la stessa password (salt automatico) e
-    // resiste agli attacchi brute-force.
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    // ================================================================
-    // REGISTRAZIONE
-    // ================================================================
     @Transactional
     public Utente registra(Utente nuovo) {
         if (utenteRepository.existsByEmail(nuovo.getEmail())) {
             throw new IllegalArgumentException("Email già registrata");
         }
-        // Default: ACQUIRENTE. Per registrarsi come VENDITORE servirebbe un
-        // flag esplicito dal frontend (la traccia non vieta che siano gli utenti
-        // a scegliere il loro ruolo alla registrazione).
+
         if (nuovo.getRuolo() == null) {
             nuovo.setRuolo(Utente.Ruolo.ACQUIRENTE);
         }
-        // Niente ADMIN tramite registrazione pubblica!
+
         if (nuovo.getRuolo() == Utente.Ruolo.ADMIN) {
             throw new IllegalArgumentException("Non è possibile registrarsi come admin");
         }
-        // Hash della password prima di salvare
+
         nuovo.setPassword(passwordEncoder.encode(nuovo.getPassword()));
         nuovo.setBannato(false);
         return utenteRepository.save(nuovo);
     }
 
-    // ================================================================
-    // LOGIN - controlla credenziali, restituisce l'utente se ok
-    // ================================================================
     public Optional<Utente> login(String email, String passwordInChiaro) {
         Optional<Utente> utenteOpt = utenteRepository.findByEmail(email);
         if (utenteOpt.isEmpty()) return Optional.empty();
@@ -61,9 +50,6 @@ public class UtenteService {
         return Optional.of(u);
     }
 
-    // ================================================================
-    // BAN UTENTE - solo admin (verifica fatta nel controller)
-    // ================================================================
     @Transactional
     public Utente bannaUtente(Long utenteId, Long adminId) {
         verificaCheSiaAdmin(adminId);
@@ -76,9 +62,6 @@ public class UtenteService {
         return utenteRepository.save(u);
     }
 
-    // ================================================================
-    // SBANNA - utile per ripristinare un utente bannato
-    // ================================================================
     @Transactional
     public Utente sbannaUtente(Long utenteId, Long adminId) {
         verificaCheSiaAdmin(adminId);
@@ -88,9 +71,6 @@ public class UtenteService {
         return utenteRepository.save(u);
     }
 
-    // ================================================================
-    // NOMINA ADMIN - solo un admin esistente può creare altri admin
-    // ================================================================
     @Transactional
     public Utente nominaAdmin(Long utenteId, Long adminId) {
         verificaCheSiaAdmin(adminId);
@@ -100,9 +80,6 @@ public class UtenteService {
         return utenteRepository.save(u);
     }
 
-    // ================================================================
-    // HELPER
-    // ================================================================
     private void verificaCheSiaAdmin(Long adminId) {
         Utente admin = utenteRepository.findById(adminId)
                 .orElseThrow(() -> new IllegalArgumentException("Admin non trovato"));

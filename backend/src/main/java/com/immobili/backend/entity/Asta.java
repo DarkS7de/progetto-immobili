@@ -26,7 +26,6 @@ public class Asta {
     @Column(nullable = false)
     private Boolean attiva = true;
 
-    // 1-a-1 con Annuncio (UNIQUE sulla FK lato DB)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "annuncio_id", nullable = false, unique = true)
     @JsonIgnoreProperties({"foto", "venditore"})

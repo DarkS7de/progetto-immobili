@@ -23,7 +23,6 @@ public class AstaService {
     @Autowired private AnnuncioRepository annuncioRepository;
     @Autowired private UtenteRepository utenteRepository;
 
-    // ============ CREAZIONE ASTA (solo venditore proprietario o admin) ============
     @Transactional
     public Asta creaAsta(Long annuncioId, Asta dati, Long utenteId) {
         Annuncio annuncio = annuncioRepository.findById(annuncioId)
@@ -38,7 +37,6 @@ public class AstaService {
             throw new SecurityException("Solo il proprietario può creare un'asta per questo annuncio");
         }
 
-        // Un annuncio può avere una sola asta (vincolo UNIQUE nel DB)
         if (astaRepository.findByAnnuncioId(annuncioId).isPresent()) {
             throw new IllegalStateException("Esiste già un'asta per questo annuncio");
         }
@@ -52,7 +50,6 @@ public class AstaService {
         return astaRepository.save(dati);
     }
 
-    // ============ FARE UN'OFFERTA (acquirenti) ============
     @Transactional
     public Offerta faiOfferta(Long astaId, BigDecimal importo, Long acquirenteId) {
         Asta asta = astaRepository.findById(astaId)
@@ -61,7 +58,6 @@ public class AstaService {
         Utente acquirente = utenteRepository.findById(acquirenteId)
                 .orElseThrow(() -> new IllegalArgumentException("Utente non trovato"));
 
-        // Validazioni
         if (!Boolean.TRUE.equals(asta.getAttiva())) {
             throw new IllegalStateException("L'asta non è attiva");
         }
@@ -73,13 +69,11 @@ public class AstaService {
             throw new IllegalStateException("L'asta è terminata");
         }
 
-        // L'offerta deve superare l'offerta minima
         if (importo.compareTo(asta.getOffertaMinima()) < 0) {
             throw new IllegalArgumentException(
                     "L'offerta deve essere almeno " + asta.getOffertaMinima());
         }
 
-        // L'offerta deve superare l'offerta più alta esistente
         var offertaTop = offertaRepository.findFirstByAstaIdOrderByImportoDesc(astaId);
         if (offertaTop.isPresent() && importo.compareTo(offertaTop.get().getImporto()) <= 0) {
             throw new IllegalArgumentException(
@@ -93,7 +87,6 @@ public class AstaService {
         return offertaRepository.save(offerta);
     }
 
-    // ============ CHIUSURA ASTA (proprietario o admin) ============
     @Transactional
     public Asta chiudiAsta(Long astaId, Long utenteId) {
         Asta asta = astaRepository.findById(astaId)

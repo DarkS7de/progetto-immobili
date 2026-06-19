@@ -22,6 +22,7 @@ public class OffertaController {
     @Autowired
     private AstaService astaService;
 
+
     @GetMapping("/asta/{astaId}")
     public List<Offerta> getByAsta(@PathVariable Long astaId) {
         return offertaRepository.findByAstaIdOrderByImportoDesc(astaId);
@@ -33,6 +34,7 @@ public class OffertaController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
 
     @PostMapping("/asta/{astaId}")
     public ResponseEntity<?> fai(@PathVariable Long astaId,

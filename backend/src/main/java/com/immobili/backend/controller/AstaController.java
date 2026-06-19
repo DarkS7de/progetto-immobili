@@ -21,6 +21,7 @@ public class AstaController {
     @Autowired
     private AstaService astaService;
 
+
     @GetMapping
     public List<Asta> getAttive() {
         return astaRepository.findByAttivaTrue();
@@ -32,6 +33,7 @@ public class AstaController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
 
     @PostMapping("/annuncio/{annuncioId}")
     public ResponseEntity<?> crea(@PathVariable Long annuncioId,
@@ -45,6 +47,7 @@ public class AstaController {
             return ResponseEntity.badRequest().body(Map.of("errore", ex.getMessage()));
         }
     }
+
 
     @PatchMapping("/{id}/chiudi")
     public ResponseEntity<?> chiudi(@PathVariable Long id, @RequestParam Long utenteId) {

@@ -23,7 +23,6 @@ public class AnnuncioController {
     @Autowired
     private AnnuncioRepository annuncioRepository;
 
-    // ============ LETTURA ============
 
     @GetMapping
     public List<Annuncio> getAll() {
@@ -54,9 +53,7 @@ public class AnnuncioController {
         return annuncioService.ricerca(tipo, categoriaId, prezzoMin, prezzoMax, mqMin, mqMax);
     }
 
-    // ============ SCRITTURA ============
 
-    // POST /api/annunci?venditoreId=2
     @PostMapping
     public ResponseEntity<?> crea(@RequestBody Annuncio annuncio, @RequestParam Long venditoreId) {
         try {
@@ -66,7 +63,7 @@ public class AnnuncioController {
         }
     }
 
-    // PUT /api/annunci/5?utenteId=2
+
     @PutMapping("/{id}")
     public ResponseEntity<?> modifica(
             @PathVariable Long id,
@@ -81,7 +78,7 @@ public class AnnuncioController {
         }
     }
 
-    // PATCH /api/annunci/5/ribasso?utenteId=2  body: {"nuovoPrezzo": 120000}
+
     @PatchMapping("/{id}/ribasso")
     public ResponseEntity<?> ribassa(
             @PathVariable Long id,
@@ -97,7 +94,7 @@ public class AnnuncioController {
         }
     }
 
-    // DELETE /api/annunci/5?utenteId=2
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> elimina(@PathVariable Long id, @RequestParam Long utenteId) {
         try {

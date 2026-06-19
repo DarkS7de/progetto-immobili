@@ -40,7 +40,6 @@ export class Ricerca implements OnInit {
   ngOnInit(): void {
     this.categoriaService.getAll().subscribe(c => this.categorie.set(c));
 
-    // Leggi i queryParams: testo, categoriaId
     this.route.queryParams.subscribe(params => {
       if (params['testo']) this.filtri.testo = params['testo'];
       if (params['categoriaId']) this.filtri.categoriaId = +params['categoriaId'];
@@ -63,7 +62,6 @@ export class Ricerca implements OnInit {
       mqMax: this.filtri.mqMax ?? undefined
     }).subscribe({
       next: (dati) => {
-        // Filtro testuale lato client
         let lista = dati;
         if (this.filtri.testo) {
           const t = this.filtri.testo.toLowerCase();

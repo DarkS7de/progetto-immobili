@@ -1,6 +1,3 @@
-/* =============================================================
-   HERO SECTION
-   ============================================================= */
 .hero {
   position: relative;
   padding: 80px 0 100px;
@@ -52,7 +49,6 @@
   line-height: 1.6;
 }
 
-/* Barra ricerca centrale */
 .hero-search-wrapper {
   max-width: 600px;
   margin: 0 auto;
@@ -99,7 +95,6 @@
   flex-shrink: 0;
 }
 
-/* Bolle decorative animate */
 .hero-bubble {
   position: absolute;
   border-radius: 50%;
@@ -140,9 +135,6 @@
   50% { transform: translate(30px, -30px); }
 }
 
-/* =============================================================
-   SEZIONI
-   ============================================================= */
 .section-title {
   font-size: 1.5rem;
   font-weight: 700;
@@ -150,9 +142,6 @@
   margin-bottom: 20px;
 }
 
-/* =============================================================
-   STATISTICHE
-   ============================================================= */
 .stat-card {
   background: linear-gradient(135deg,
   rgba(255, 255, 255, 0.6) 0%,
@@ -190,9 +179,6 @@
   font-weight: 500;
 }
 
-/* =============================================================
-   CATEGORIE
-   ============================================================= */
 .categoria-card {
   background: linear-gradient(135deg,
   rgba(255, 255, 255, 0.6) 0%,
@@ -241,9 +227,6 @@
   color: var(--text);
 }
 
-/* =============================================================
-   ANNUNCI CARDS
-   ============================================================= */
 .card-cliccabile {
   transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;

@@ -42,10 +42,8 @@ public class Utente {
     @Column(name = "data_registrazione", nullable = false, updatable = false)
     private LocalDateTime dataRegistrazione = LocalDateTime.now();
 
-    // Costruttori
     public Utente() {}
 
-    // Getter e Setter
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

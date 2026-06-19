@@ -11,8 +11,6 @@ public class Foto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // I dati binari della foto. @JsonIgnore = NON li serializziamo nel JSON di lista,
-    // ce li scarichiamo solo via endpoint dedicato /api/foto/{id}/raw
     @Basic(fetch = FetchType.LAZY)
     @Column(nullable = false, columnDefinition = "BYTEA")
     @JsonIgnore
@@ -32,10 +30,8 @@ public class Foto {
     @JsonIgnore   // evitiamo loop infinito Annuncio ↔ Foto
     private Annuncio annuncio;
 
-    // Costruttori
     public Foto() {}
 
-    // Getter e Setter
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

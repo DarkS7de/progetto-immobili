@@ -8,15 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * REAL SUBJECT del pattern Proxy.
- * Implementa la logica vera: parla al DB tramite il repository.
- * Non sa nulla del Proxy che gli sta davanti.
- *
- * NOTA: l'annotazione "fotoServiceReal" è il NOME del bean Spring.
- * Serve perchè avremo due implementazioni della stessa interfaccia
- * (questa e il Proxy) e Spring deve poterle distinguere.
- */
 @Service("fotoServiceReal")
 public class FotoService implements IFotoService {
 
